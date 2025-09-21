@@ -18,12 +18,21 @@ type SelectProps = {
 	onChange?: (selected: OptionType) => void; // функция при выборе опции
 	onClose?: () => void; // функция при закрытии селекта
 	title?: string;
+	selectStatus: 'valid' | 'invalid'; //??? временное решение
 };
 
 // onClose и onChange не написаны, возмонжо они передаются через родителя
 
 export const Select = (props: SelectProps) => {
-	const { options, placeholder, selected, onChange, onClose, title } = props;
+	const {
+		options,
+		placeholder,
+		selected,
+		onChange,
+		onClose,
+		title,
+		selectStatus,
+	} = props;
 	const [isOpen, setIsOpen] = useState<boolean>(false); // открыт ли селект
 	// isOpen -состояние при котором показываются элементы или нет
 	const rootRef = useRef<HTMLDivElement>(null); // контейнер селекта(для закрытия)
@@ -74,7 +83,8 @@ export const Select = (props: SelectProps) => {
 						styles.placeholder,
 						(styles as Record<string, string>)[optionClassName]
 					)}
-					data-status={status}
+					// data-status={status}
+					data-status={selectStatus}
 					data-selected={!!selected?.value} // передаем для стилизации инверт зн выбран опции
 					onClick={handlePlaceHolderClick}
 					role='button'

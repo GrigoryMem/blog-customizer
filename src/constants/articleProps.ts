@@ -10,7 +10,7 @@ export const fontFamilyClasses = [
 // number в квадратных скобках — это тип индекса массива
 export type FontFamiliesClasses = (typeof fontFamilyClasses)[number];
 
-// Общий тип опций
+// Общий тип опции - для выбора  select или radio
 
 export type OptionType = {
 	title: string;
