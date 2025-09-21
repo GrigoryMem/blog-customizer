@@ -5,17 +5,19 @@ type UseEnterSubmit = {
 	onChange?: (option: OptionType) => void;
 	option: OptionType;
 };
-
+// Хук позволяет «подвесить» к какому-то div (или другому элементу) реакцию на клавишу Enter.
+// Если этот элемент в фокусе и пользователь нажал Enter, хук вызовет функцию onChange с нужной опцией (option).
 export const useEnterSubmit = ({ onChange, option }: UseEnterSubmit) => {
-	const optionRef = useRef<HTMLDivElement>(null);
-
+	const optionRef = useRef<HTMLDivElement>(null); // вохмонжо ошибка, хук не возвращает реф
 	useEffect(() => {
 		const optionHtml = optionRef.current;
 
-		if (!optionHtml) return;
+		if (!optionHtml) return; //
 
 		const handleEnterKeyDown = (event: KeyboardEvent) => {
+			// когда элемент в фокусе и нажата Enter
 			if (document.activeElement === optionHtml && event.key === 'Enter') {
+				// вызываем колбэк
 				onChange?.(option);
 			}
 		};
@@ -28,3 +30,5 @@ export const useEnterSubmit = ({ onChange, option }: UseEnterSubmit) => {
 		};
 	}, [onChange, option]);
 };
+
+// почему здесь 2 зависимости в отличие от похожего хука select useEnterOptionSubmit

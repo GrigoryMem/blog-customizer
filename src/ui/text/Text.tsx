@@ -3,14 +3,15 @@ import { clsx } from 'clsx';
 import { FontFamiliesClasses } from 'src/constants/articleProps';
 
 import styles from './index.module.scss';
-
+// ElementType - тип для тега HTML или компонента React (например 'div', 'span' или пользовательский компонент).
+// FontFamiliesClasses -множество допустимых шрифтов
 type TextProps = {
 	/** Сам текст для вывода */
-	children: ReactNode;
+	children: ReactNode; // текст или JSX для рендеринга
 	/** Тэг которым отрендерить текст */
-	as?: ElementType;
+	as?: ElementType; // тег для вывода, например 'div' или 'span'
 	/** Булевая пропса, должен ли текст меняться в зависимости от конфига */
-	dynamic?: boolean;
+	dynamic?: boolean; // будет ли изменение текста?// должен ли текст меняться по конфигу??
 	/** Размер шрифта */
 	size?: 12 | 18 | 22 | 25 | 31 | 38 | 45;
 	/** Вес шрифта */
@@ -27,6 +28,7 @@ type TextProps = {
 	dynamicLite?: boolean;
 };
 
+// Пропсы позволяют гибко настраивать текст: тег, размер, жирность, шрифт, верхний регистр, динамичность и т.д.
 export const Text = ({
 	children,
 	as: Tag = 'div',

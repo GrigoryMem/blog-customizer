@@ -2,7 +2,7 @@ import { Text } from 'src/ui/text';
 
 import styles from './Button.module.scss';
 import { clsx } from 'clsx';
-
+//  кнопка применить либо очистить
 export const Button = ({
 	title,
 	onClick,

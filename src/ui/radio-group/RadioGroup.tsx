@@ -5,11 +5,11 @@ import { Option } from './Option';
 import styles from './RadioGroup.module.scss';
 
 type RadioGroupProps = {
-	name: string;
-	options: OptionType[];
-	selected: OptionType;
-	onChange?: (value: OptionType) => void;
-	title: string;
+	name: string; //имя группы радио
+	options: OptionType[]; //массив вариантов input radio(компонент Option)
+	selected: OptionType; //текущая выбранная опция (объект OptionType).
+	onChange?: (value: OptionType) => void; //
+	title: string; //
 };
 
 export const RadioGroup = (props: RadioGroupProps) => {

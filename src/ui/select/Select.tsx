@@ -1,54 +1,60 @@
 import { useState, useRef } from 'react';
-import type { MouseEventHandler } from 'react';
+import type { MouseEventHandler } from 'react'; // тип событие функция
 import clsx from 'clsx';
 import { OptionType } from 'src/constants/articleProps';
 import { Text } from 'src/ui/text';
 import arrowDown from 'src/images/arrow-down.svg';
-import { Option } from './Option';
-import { isFontFamilyClass } from './helpers/isFontFamilyClass';
-import { useEnterSubmit } from './hooks/useEnterSubmit';
-import { useOutsideClickClose } from './hooks/useOutsideClickClose';
+import { Option } from './Option'; // опция li
+import { isFontFamilyClass } from './helpers/isFontFamilyClass'; // корректно ли имя шрифта
+import { useEnterSubmit } from './hooks/useEnterSubmit'; //открывает или закрывает селект при нажатии Enter на плейсхолдер
+import { useOutsideClickClose } from './hooks/useOutsideClickClose'; // закрывает селект при клике вне его
 
 import styles from './Select.module.scss';
 
 type SelectProps = {
-	selected: OptionType | null;
-	options: OptionType[];
-	placeholder?: string;
-	onChange?: (selected: OptionType) => void;
-	onClose?: () => void;
+	selected: OptionType | null; // выбрана опция или нет?
+	options: OptionType[]; // массив всех опций
+	placeholder?: string; // текст подказки если ничего не выбрано
+	onChange?: (selected: OptionType) => void; // функция при выборе опции
+	onClose?: () => void; // функция при закрытии селекта
 	title?: string;
 };
 
+// onClose и onChange не написаны, возмонжо они передаются через родителя
+
 export const Select = (props: SelectProps) => {
 	const { options, placeholder, selected, onChange, onClose, title } = props;
-	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const rootRef = useRef<HTMLDivElement>(null);
-	const placeholderRef = useRef<HTMLDivElement>(null);
-	const optionClassName = selected?.optionClassName ?? '';
-
+	const [isOpen, setIsOpen] = useState<boolean>(false); // открыт ли селект
+	// isOpen -состояние при котором показываются элементы или нет
+	const rootRef = useRef<HTMLDivElement>(null); // контейнер селекта(для закрытия)
+	// rootRef  -неодбходим для кликов вне селекта
+	const placeholderRef = useRef<HTMLDivElement>(null); // для клика на селект
+	const optionClassName = selected?.optionClassName ?? ''; // класс опции
+	// Используем хук для закрытия селекта при клике вне него.
 	useOutsideClickClose({
 		isOpen,
-		rootRef,
+		rootRef, // ссылка на корневой элемент селекта
 		onClose,
-		onChange: setIsOpen,
+		onChange: setIsOpen, // определяем параметр "на месте"
 	});
-
+	//  октрытие/закрытие селект - хук по кл авиша Enter
 	useEnterSubmit({
-		placeholderRef,
+		placeholderRef, // ссылка на "селект"(дочер элемент)
 		onChange: setIsOpen,
 	});
-
+	//для клика по опции
 	const handleOptionClick = (option: OptionType) => {
-		setIsOpen(false);
-		onChange?.(option);
+		setIsOpen(false); // закрываем крневой элемент селекта
+		onChange?.(option); // вызываем КАКУЮ-ТО функцию с выбранной опцией чтобы обозначить чтоона выбрана???
 	};
+	//  функцция для клика на плейсхолдер, открывваем/закрываем селект
 	const handlePlaceHolderClick: MouseEventHandler<HTMLDivElement> = () => {
 		setIsOpen((isOpen) => !isOpen);
 	};
 
 	return (
 		<div className={styles.container}>
+			{/* заголов селекта */}
 			{title && (
 				<>
 					<Text size={12} weight={800} uppercase>
@@ -59,20 +65,22 @@ export const Select = (props: SelectProps) => {
 			<div
 				className={styles.selectWrapper}
 				ref={rootRef}
-				data-is-active={isOpen}
+				data-is-active={isOpen} // стилизуем открытое состояние
 				data-testid='selectWrapper'>
 				<img src={arrowDown} alt='иконка стрелочки' className={styles.arrow} />
+				{/* "элемент селекта": */}
 				<div
 					className={clsx(
 						styles.placeholder,
 						(styles as Record<string, string>)[optionClassName]
 					)}
 					data-status={status}
-					data-selected={!!selected?.value}
+					data-selected={!!selected?.value} // передаем для стилизации инверт зн выбран опции
 					onClick={handlePlaceHolderClick}
 					role='button'
-					tabIndex={0}
+					tabIndex={0} // работа tab стандартно
 					ref={placeholderRef}>
+					{/* текст для выбранной опции: */}
 					<Text
 						family={
 							isFontFamilyClass(selected?.className)
@@ -85,6 +93,7 @@ export const Select = (props: SelectProps) => {
 				{isOpen && (
 					<ul className={styles.select} data-testid='selectDropdown'>
 						{options
+							// фильтруем выбранную опцию чтобы не показывать ее в открыв списке
 							.filter((option) => selected?.value !== option.value)
 							.map((option) => (
 								<Option

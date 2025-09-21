@@ -5,8 +5,12 @@ export const fontFamilyClasses = [
 	'days-one',
 	'merriweather',
 ] as const;
-
+// as const - неизменяемый массив - список шрифтов
+// "возьми тип этого массива и достань тип любого его элемента по индексу".
+// number в квадратных скобках — это тип индекса массива
 export type FontFamiliesClasses = (typeof fontFamilyClasses)[number];
+
+// Общий тип опций
 
 export type OptionType = {
 	title: string;
@@ -15,6 +19,18 @@ export type OptionType = {
 	optionClassName?: string;
 };
 
+// OptionType
+// Это шаблон для всех вариантов выбора (шрифты, цвета, ширина и т.д.).
+
+// title → название, которое показывается пользователю.
+
+// value → значение (например, hex-код цвета или размер).
+
+// className → CSS-класс, который будет применяться.
+
+// optionClassName? → дополнительный класс (опционально).
+
+// Опции для шрифтов
 export const fontFamilyOptions: OptionType[] & {
 	optionClassName?: FontFamiliesClasses;
 } = [
@@ -32,7 +48,7 @@ export const fontFamilyOptions: OptionType[] & {
 		className: fontFamilyClasses[4],
 	},
 ];
-
+// Цвета шрифтов
 export const fontColors: OptionType[] = [
 	{
 		title: 'Черный',
@@ -90,6 +106,7 @@ export const fontColors: OptionType[] = [
 	},
 ];
 
+// Цвета фона
 export const backgroundColors: OptionType[] = [
 	{
 		title: 'Белый',
@@ -146,7 +163,8 @@ export const backgroundColors: OptionType[] = [
 		optionClassName: 'option-purple',
 	},
 ];
-
+// optionClassName класс для оформления самой опции (например, в выпадающем списке).
+// Ширина контента
 export const contentWidthArr: OptionType[] = [
 	{
 		title: 'Широкий',
@@ -161,13 +179,13 @@ export const contentWidthArr: OptionType[] = [
 		optionClassName: 'option-narrow',
 	},
 ];
-
+// Размер шрифта
 export const fontSizeOptions: OptionType[] = [
 	{ title: '18px', value: '18px', className: 'font-size-18' },
 	{ title: '25px', value: '25px', className: 'font-size-25' },
 	{ title: '38px', value: '38px', className: 'font-size-38' },
 ];
-
+// Начальное состояние статьи
 export const defaultArticleState = {
 	fontFamilyOption: fontFamilyOptions[0],
 	fontColor: fontColors[0],
@@ -175,5 +193,5 @@ export const defaultArticleState = {
 	contentWidth: contentWidthArr[0],
 	fontSizeOption: fontSizeOptions[0],
 };
-
+// Тип состояния статьи
 export type ArticleStateType = typeof defaultArticleState;
