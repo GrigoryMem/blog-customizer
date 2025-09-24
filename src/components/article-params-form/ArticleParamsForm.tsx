@@ -29,8 +29,9 @@ type FormState<T> = {
 };
 
 // перенести в раздел данные файла  ArticleProps и возможно испльзовать в map
+type TitlesFormElems = string;
 
-const titleFormElements: FormState<string> = {
+const titleFormElements: FormState<TitlesFormElems> = {
 	fontFamily: 'Шрифт',
 	fontSize: 'Размер шрифта',
 	fontColor: 'Цвет шрифта',
@@ -49,7 +50,7 @@ export const ArticleParamsForm = () => {
 		contentWidth: contentWidthArr[0],
 	});
 
-	function handleRadioClick(
+	function handleFormElemClick(
 		option: OptionType,
 		title?: string,
 		namesFields?: Record<string, string>
@@ -92,43 +93,63 @@ export const ArticleParamsForm = () => {
 						{/* селекты можно сделать map */}
 						<Select
 							options={fontFamilyOptions}
-							title={'Шрифт'}
+							title={titleFormElements.fontFamily}
 							selected={stateForm.fontFamily}
 							onChange={(option) => {
-								handleRadioClick(option, 'Шрифт', titleFormElements);
+								handleFormElemClick(
+									option,
+									titleFormElements.fontFamily,
+									titleFormElements
+								);
 							}}
 						/>
 						<RadioGroup
 							options={fontSizeOptions}
-							title={'Размер шрифта'}
+							title={titleFormElements.fontSize}
 							selected={stateForm.fontSize}
 							name={'fontSize'}
 							onChange={(option) => {
-								handleRadioClick(option, 'Размер шрифта', titleFormElements);
+								handleFormElemClick(
+									option,
+									titleFormElements.fontSize,
+									titleFormElements
+								);
 							}}
 						/>
 						<Select
 							options={fontColors}
-							title={'Цвет шрифта'}
+							title={titleFormElements.fontColor}
 							selected={stateForm.fontColor}
 							onChange={(option) => {
-								handleRadioClick(option, 'Цвет шрифта', titleFormElements);
+								handleFormElemClick(
+									option,
+									titleFormElements.fontColor,
+									titleFormElements
+								);
 							}}
 						/>
 						<Select
 							options={backgroundColors}
-							title={'Цвет фона'}
+							title={titleFormElements.backgroundColor}
 							selected={stateForm.backgroundColor}
 							onChange={(option) => {
-								handleRadioClick(option, 'Цвет фона', titleFormElements);
+								handleFormElemClick(
+									option,
+									titleFormElements.backgroundColor,
+									titleFormElements
+								);
 							}}
 						/>
 						<Select
 							options={contentWidthArr}
-							title={'Ширина контента'}
+							title={titleFormElements.contentWidth}
 							selected={stateForm.contentWidth}
 							onChange={(option) => {
-								handleRadioClick(option, 'Ширина контента', titleFormElements);
+								handleFormElemClick(
+									option,
+									titleFormElements.contentWidth,
+									titleFormElements
+								);
 							}}
 						/>
 					</div>
