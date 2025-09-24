@@ -18,7 +18,7 @@ type SelectProps = {
 	onChange?: (selected: OptionType) => void; // функция при выборе опции
 	onClose?: () => void; // функция при закрытии селекта
 	title?: string;
-	selectStatus: 'valid' | 'invalid'; //??? временное решение
+	// selectStatus?: 'valid' | 'invalid'; //??? временное решение
 };
 
 // onClose и onChange не написаны, возмонжо они передаются через родителя
@@ -31,11 +31,14 @@ export const Select = (props: SelectProps) => {
 		onChange,
 		onClose,
 		title,
-		selectStatus,
+		// selectStatus,
 	} = props;
 	const [isOpen, setIsOpen] = useState<boolean>(false); // открыт ли селект
 	// isOpen -состояние при котором показываются элементы или нет
 	const rootRef = useRef<HTMLDivElement>(null); // контейнер селекта(для закрытия)
+	// добавил стейт и изменил обработчик
+	// selected вмесо передаем selected={selectedValue}
+	// const [selectedValue, setSelected] = useState<OptionType | null>(selected);
 	// rootRef  -неодбходим для кликов вне селекта
 	const placeholderRef = useRef<HTMLDivElement>(null); // для клика на селект
 	const optionClassName = selected?.optionClassName ?? ''; // класс опции
@@ -55,6 +58,9 @@ export const Select = (props: SelectProps) => {
 	const handleOptionClick = (option: OptionType) => {
 		setIsOpen(false); // закрываем крневой элемент селекта
 		onChange?.(option); // вызываем КАКУЮ-ТО функцию с выбранной опцией чтобы обозначить чтоона выбрана???
+		// setSelected(option); // выставляем выбранную опцию!
+		// // везде меняем selected на selectedValue
+		// console.log(option)
 	};
 	//  функцция для клика на плейсхолдер, открывваем/закрываем селект
 	const handlePlaceHolderClick: MouseEventHandler<HTMLDivElement> = () => {
@@ -84,7 +90,7 @@ export const Select = (props: SelectProps) => {
 						(styles as Record<string, string>)[optionClassName]
 					)}
 					// data-status={status}
-					data-status={selectStatus}
+					// data-status={selectStatus}
 					data-selected={!!selected?.value} // передаем для стилизации инверт зн выбран опции
 					onClick={handlePlaceHolderClick}
 					role='button'
