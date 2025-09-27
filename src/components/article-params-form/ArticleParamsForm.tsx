@@ -23,6 +23,7 @@ type FormState<T> = {
 
 type TitlesFormElems = string;
 
+export type submitForm = FormState<OptionType>;
 //названия шрифтов
 const titleFormElements: FormState<TitlesFormElems> = {
 	fontFamily: 'Шрифт',
