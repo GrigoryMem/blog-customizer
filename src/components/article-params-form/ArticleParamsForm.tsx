@@ -12,7 +12,7 @@ import { articlesData, OptionType } from 'src/constants/articleProps';
 import { Text } from 'src/ui/text';
 //  пропсы для ArticleParamsForm
 
-//  изменить типизацию
+//  состояние данных формы
 type FormState<T> = {
 	fontFamily: T;
 	fontSize: T;
@@ -20,15 +20,8 @@ type FormState<T> = {
 	backgroundColor: T;
 	contentWidth: T;
 };
-// console.log(Object.entries(articlesData).forEach(([key, value]) => console.log(key, value)));
 
-// console.log(Object.values(articlesData).forEach((value) => console.log(value)));
-// перенести в раздел данные файла  ArticleProps и возможно испльзовать в map
 type TitlesFormElems = string;
-//  ограничиваем ключи полей формы нашими данными -для типизации заголовков
-type FormKeys = keyof typeof titleFormElements;
-//  составляем кортеж для итерации по Object.entries - массив кортежей, по которым мыитерируемся
-type PairData = [FormKeys, OptionType[]]; // кортеж типизации заголовка + массив опций
 
 //названия шрифтов
 const titleFormElements: FormState<TitlesFormElems> = {
@@ -38,6 +31,10 @@ const titleFormElements: FormState<TitlesFormElems> = {
 	backgroundColor: 'Цвет фона',
 	contentWidth: 'Ширина контента',
 };
+//  ограничиваем ключи полей формы нашими данными -для типизации заголовков полей формы
+type FormKeys = keyof typeof titleFormElements;
+//  составляем кортеж для итерации по Object.entries - массив кортежей, по которым итерируемся
+type PairData = [FormKeys, OptionType[]]; // кортеж типизации заголовка + массив опций
 
 export const ArticleParamsForm = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -96,7 +93,7 @@ export const ArticleParamsForm = () => {
 									<RadioGroup
 										key={title}
 										title={titleFormElements[title]}
-										name={'fontSize'}
+										name={title}
 										options={options}
 										selected={stateForm.fontSize}
 										onChange={(option) => {
