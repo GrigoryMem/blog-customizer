@@ -196,10 +196,10 @@ export const defaultArticleState = {
 // Тип состояния статьи
 export type ArticleStateType = typeof defaultArticleState;
 //  экспорт всех данных:
-export const articlesData = [
-	fontFamilyOptions,
-	fontColors,
-	backgroundColors,
-	contentWidthArr,
-	fontSizeOptions,
-];
+export const articlesData = {
+	fontFamily: fontFamilyOptions,
+	fontColor: fontColors,
+	backgroundColor: backgroundColors,
+	contentWidth: contentWidthArr,
+	fontSize: fontSizeOptions,
+};

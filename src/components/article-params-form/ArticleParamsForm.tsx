@@ -6,14 +6,7 @@ import { useEffect, useState } from 'react';
 // мои наработки
 import { Select } from 'src/ui/select';
 import { RadioGroup } from 'src/ui/radio-group';
-import {
-	fontFamilyOptions,
-	fontSizeOptions,
-	fontColors,
-	backgroundColors,
-	contentWidthArr,
-	OptionType,
-} from 'src/constants/articleProps';
+import { articlesData, OptionType } from 'src/constants/articleProps';
 // import { StoryDecorator } from 'src/ui/story-decorator';
 // import {}
 import { Text } from 'src/ui/text';
@@ -27,10 +20,17 @@ type FormState<T> = {
 	backgroundColor: T;
 	contentWidth: T;
 };
+// console.log(Object.entries(articlesData).forEach(([key, value]) => console.log(key, value)));
 
+// console.log(Object.values(articlesData).forEach((value) => console.log(value)));
 // перенести в раздел данные файла  ArticleProps и возможно испльзовать в map
 type TitlesFormElems = string;
+//  ограничиваем ключи полей формы нашими данными -для типизации заголовков
+type FormKeys = keyof typeof titleFormElements;
+//  составляем кортеж для итерации по Object.entries - массив кортежей, по которым мыитерируемся
+type PairData = [FormKeys, OptionType[]]; // кортеж типизации заголовка + массив опций
 
+//названия шрифтов
 const titleFormElements: FormState<TitlesFormElems> = {
 	fontFamily: 'Шрифт',
 	fontSize: 'Размер шрифта',
@@ -43,11 +43,12 @@ export const ArticleParamsForm = () => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const [stateForm, setStateForm] = useState<FormState<OptionType>>({
-		fontColor: fontColors[0],
-		fontFamily: fontFamilyOptions[0],
-		fontSize: fontSizeOptions[0],
-		backgroundColor: backgroundColors[0],
-		contentWidth: contentWidthArr[0],
+		// формируем изначальное состояние
+		fontColor: articlesData.fontColor[0],
+		fontFamily: articlesData.fontFamily[0],
+		fontSize: articlesData.fontSize[0],
+		backgroundColor: articlesData.backgroundColor[0],
+		contentWidth: articlesData.contentWidth[0],
 	});
 
 	function handleFormElemClick(
@@ -69,7 +70,7 @@ export const ArticleParamsForm = () => {
 		console.log(stateForm);
 	}, [stateForm]);
 
-	function handlOpenFormClick() {
+	function handelOpenFormClick() {
 		setIsOpen(!isOpen);
 	}
 	return (
@@ -77,7 +78,7 @@ export const ArticleParamsForm = () => {
 			<ArrowButton
 				isOpen={isOpen}
 				onClick={() => {
-					handlOpenFormClick();
+					handelOpenFormClick();
 				}}
 			/>
 			<aside
@@ -89,9 +90,43 @@ export const ArticleParamsForm = () => {
 					</Text>
 					{/* моя правка */}
 					<div className={styles.selectGroup}>
+						{(Object.entries(articlesData) as PairData[]).map(
+							([title, options]) =>
+								title === 'fontSize' ? (
+									<RadioGroup
+										key={title}
+										title={titleFormElements[title]}
+										name={'fontSize'}
+										options={options}
+										selected={stateForm.fontSize}
+										onChange={(option) => {
+											handleFormElemClick(
+												option,
+												titleFormElements[title],
+												titleFormElements
+											);
+										}}
+									/>
+								) : (
+									<Select
+										key={title}
+										options={options}
+										// кортеж PairData  а если такойключ title ?? в объекте таком то...
+										title={titleFormElements[title]}
+										selected={stateForm[title]}
+										onChange={(option) => {
+											handleFormElemClick(
+												option,
+												titleFormElements[title],
+												titleFormElements
+											);
+										}}
+									/>
+								)
+						)}
 						{/* в этом месте можно сделать children */}
 						{/* селекты можно сделать map */}
-						<Select
+						{/* <Select
 							options={fontFamilyOptions}
 							title={titleFormElements.fontFamily}
 							selected={stateForm.fontFamily}
@@ -151,7 +186,7 @@ export const ArticleParamsForm = () => {
 									titleFormElements
 								);
 							}}
-						/>
+						/> */}
 					</div>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' htmlType='reset' type='clear' />
