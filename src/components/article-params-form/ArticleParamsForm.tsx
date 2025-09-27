@@ -2,7 +2,7 @@ import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
 import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // мои наработки
 import { Select } from 'src/ui/select';
 import { RadioGroup } from 'src/ui/radio-group';
@@ -11,7 +11,7 @@ import { articlesData, OptionType } from 'src/constants/articleProps';
 // import {}
 import { Text } from 'src/ui/text';
 //  пропсы для ArticleParamsForm
-
+import { Separator } from 'src/ui/separator';
 //  состояние данных формы
 type FormState<T> = {
 	fontFamily: T;
@@ -36,17 +36,36 @@ type FormKeys = keyof typeof titleFormElements;
 //  составляем кортеж для итерации по Object.entries - массив кортежей, по которым итерируемся
 type PairData = [FormKeys, OptionType[]]; // кортеж типизации заголовка + массив опций
 
-export const ArticleParamsForm = () => {
+type FormProps = {
+	onSubmit?: (data: FormState<OptionType>) => void;
+};
+
+export const ArticleParamsForm = ({ onSubmit }: FormProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const [stateForm, setStateForm] = useState<FormState<OptionType>>({
+	const initState: FormState<OptionType> = {
 		// формируем изначальное состояние
 		fontColor: articlesData.fontColor[0],
 		fontFamily: articlesData.fontFamily[0],
 		fontSize: articlesData.fontSize[0],
 		backgroundColor: articlesData.backgroundColor[0],
 		contentWidth: articlesData.contentWidth[0],
-	});
+	};
+
+	const [stateForm, setStateForm] = useState<FormState<OptionType>>(initState);
+	// фнкция отправки формы
+	function handleSubmitForm(e: React.FormEvent<HTMLFormElement>) {
+		// React.FormEvent - типизация событий формы submit
+		// HTMLFormElement связнное с тегом form
+		e.preventDefault();
+		if (onSubmit) {
+			onSubmit(stateForm);
+		}
+	}
+	// функция сброса формы
+	function handleResetForm() {
+		setStateForm(initState);
+	}
 
 	function handleFormElemClick(
 		option: OptionType,
@@ -80,7 +99,7 @@ export const ArticleParamsForm = () => {
 			/>
 			<aside
 				className={clsx(styles.container, { [styles.container_open]: true })}>
-				<form className={styles.form}>
+				<form onSubmit={handleSubmitForm} className={styles.form}>
 					{/* заголовок тоже можно пустить через пропс */}
 					<Text as={'h2'} size={31} weight={800} uppercase>
 						Задайте параметры
@@ -88,27 +107,50 @@ export const ArticleParamsForm = () => {
 					{/* моя правка */}
 					<div className={styles.selectGroup}>
 						{(Object.entries(articlesData) as PairData[]).map(
-							([title, options]) =>
-								title === 'fontSize' ? (
-									<RadioGroup
-										key={title}
-										title={titleFormElements[title]}
-										name={title}
-										options={options}
-										selected={stateForm.fontSize}
-										onChange={(option) => {
-											handleFormElemClick(
-												option,
-												titleFormElements[title],
-												titleFormElements
-											);
-										}}
-									/>
-								) : (
+							// кортеж PairData  а если такой ключ title ?? в объекте Object.entries(articlesData)
+
+							([title, options]) => {
+								if (title === 'fontSize') {
+									return (
+										<RadioGroup
+											key={title}
+											title={titleFormElements[title]}
+											name={title}
+											options={options}
+											selected={stateForm.fontSize}
+											onChange={(option) => {
+												handleFormElemClick(
+													option,
+													titleFormElements[title],
+													titleFormElements
+												);
+											}}
+										/>
+									);
+								}
+								if (title === 'fontColor') {
+									return (
+										<React.Fragment key={title}>
+											<Select
+												options={options}
+												title={titleFormElements[title]}
+												selected={stateForm[title]}
+												onChange={(option) => {
+													handleFormElemClick(
+														option,
+														titleFormElements[title],
+														titleFormElements
+													);
+												}}
+											/>
+											<Separator />
+										</React.Fragment>
+									);
+								}
+								return (
 									<Select
 										key={title}
 										options={options}
-										// кортеж PairData  а если такойключ title ?? в объекте таком то...
 										title={titleFormElements[title]}
 										selected={stateForm[title]}
 										onChange={(option) => {
@@ -119,74 +161,17 @@ export const ArticleParamsForm = () => {
 											);
 										}}
 									/>
-								)
+								);
+							}
 						)}
-						{/* в этом месте можно сделать children */}
-						{/* селекты можно сделать map */}
-						{/* <Select
-							options={fontFamilyOptions}
-							title={titleFormElements.fontFamily}
-							selected={stateForm.fontFamily}
-							onChange={(option) => {
-								handleFormElemClick(
-									option,
-									titleFormElements.fontFamily,
-									titleFormElements
-								);
-							}}
-						/>
-						<RadioGroup
-							options={fontSizeOptions}
-							title={titleFormElements.fontSize}
-							selected={stateForm.fontSize}
-							name={'fontSize'}
-							onChange={(option) => {
-								handleFormElemClick(
-									option,
-									titleFormElements.fontSize,
-									titleFormElements
-								);
-							}}
-						/>
-						<Select
-							options={fontColors}
-							title={titleFormElements.fontColor}
-							selected={stateForm.fontColor}
-							onChange={(option) => {
-								handleFormElemClick(
-									option,
-									titleFormElements.fontColor,
-									titleFormElements
-								);
-							}}
-						/>
-						<Select
-							options={backgroundColors}
-							title={titleFormElements.backgroundColor}
-							selected={stateForm.backgroundColor}
-							onChange={(option) => {
-								handleFormElemClick(
-									option,
-									titleFormElements.backgroundColor,
-									titleFormElements
-								);
-							}}
-						/>
-						<Select
-							options={contentWidthArr}
-							title={titleFormElements.contentWidth}
-							selected={stateForm.contentWidth}
-							onChange={(option) => {
-								handleFormElemClick(
-									option,
-									titleFormElements.contentWidth,
-									titleFormElements
-								);
-							}}
-						/> */}
 					</div>
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' htmlType='reset' type='clear' />
+						<Button
+							onClick={handleResetForm}
+							title='Сбросить'
+							htmlType='reset'
+							type='clear'
+						/>
 						<Button title='Применить' htmlType='submit' type='apply' />
 					</div>
 				</form>
