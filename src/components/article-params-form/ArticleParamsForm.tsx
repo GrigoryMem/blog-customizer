@@ -98,103 +98,17 @@ export const ArticleParamsForm = ({
 							// кортеж PairData  а если такой ключ title напр  ?? в объекте Object.entries(articlesData)
 
 							([keyTitle, options]) => {
-								// if (title === 'fontSize') {
-								// 	return (
-								// 		<RadioGroup
-								// 			key={title}
-								// 			title={titlesFields[title]}
-								// 			name={title}
-								// 			options={options}
-								// 			selected={stateForm.fontSize}
-								// 			onChange={(option) => {
-								// 				handleFormElemClick(option, title);
-								// 			}}
-								// 		/>
-								// 	);
-								// }
-								// if (title === 'fontColor') {
-								// 	return (
-								// 		<React.Fragment key={title}>
-								// 			<Select
-								// 				options={options}
-								// 				title={titlesFields[title]}
-								// 				selected={stateForm[title]}
-								// 				onChange={(option) => {
-								// 					handleFormElemClick(option, title);
-								// 				}}
-								// 			/>
-								// 			<Separator />
-								// 		</React.Fragment>
-								// 	);
-								// }
-								return (
-									// <Select
-									// 	key={title}
-									// 	options={options}
-									// 	title={titlesFields[title]}
-									// 	selected={stateForm[title]}
-									// 	onChange={(option) => {
-									// 		handleFormElemClick(option, title);
-									// 	}}
-									// />
-									children({
-										key: keyTitle,
-										options,
-										title: titlesFields[keyTitle],
-										selected: stateForm[keyTitle],
-										onChange: (option) => {
-											handleFormElemClick(option, keyTitle);
-										},
-									})
-								);
+								return children({
+									key: keyTitle,
+									options,
+									title: titlesFields[keyTitle],
+									selected: stateForm[keyTitle],
+									onChange: (option) => {
+										handleFormElemClick(option, keyTitle);
+									},
+								});
 							}
 						)}
-						{/* {(Object.entries(dataFields) as PairData[]).map(
-							// кортеж PairData  а если такой ключ title ?? в объекте Object.entries(articlesData)
-
-							([title, options]) => {
-								if (title === 'fontSize') {
-									return (
-										<RadioGroup
-											key={title}
-											title={titlesFields[title]}
-											name={title}
-											options={options}
-											selected={stateForm.fontSize}
-											onChange={(option) => {
-												handleFormElemClick(option, title);
-											}}
-										/>
-									);
-								}
-								if (title === 'fontColor') {
-									return (
-										<React.Fragment key={title}>
-											<Select
-												options={options}
-												title={titlesFields[title]}
-												selected={stateForm[title]}
-												onChange={(option) => {
-													handleFormElemClick(option, title);
-												}}
-											/>
-											<Separator />
-										</React.Fragment>
-									);
-								}
-								return (
-									<Select
-										key={title}
-										options={options}
-										title={titlesFields[title]}
-										selected={stateForm[title]}
-										onChange={(option) => {
-											handleFormElemClick(option, title);
-										}}
-									/>
-								);
-							}
-						)} */}
 					</div>
 					<div className={styles.bottomContainer}>
 						<Button
