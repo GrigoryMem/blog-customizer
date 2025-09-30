@@ -96,7 +96,7 @@ export const ArticleParamsForm = ({
 				}}
 			/>
 			<aside
-				className={clsx(styles.container, { [styles.container_open]: true })}>
+				className={clsx(styles.container, { [styles.container_open]: isOpen })}>
 				<form ref={formRef} onSubmit={handleSubmitForm} className={styles.form}>
 					{/* заголовок тоже можно пустить через пропс */}
 					<Text as={'h2'} size={31} weight={800} uppercase>
