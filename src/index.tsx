@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client';
 import { StrictMode, CSSProperties, useState } from 'react';
 import clsx from 'clsx';
 import { Article } from './components/article/Article';
+import { RadioGroup } from './ui/radio-group';
 import {
 	ArticleParamsForm,
 	submitForm,
@@ -49,15 +50,34 @@ const App = () => {
 				titlesFields={FormElemsTitles}
 				onSubmit={(data) => applyStyles(data)}
 				onReset={() => applyStyles(initState)}>
-				{(renderElemData) => (
-					<Select
-						key={renderElemData.key}
-						options={renderElemData.options}
-						title={renderElemData.title}
-						selected={renderElemData.selected}
-						onChange={renderElemData.onChange}
-					/>
-				)}
+				{(renderElemData) => {
+					if (
+						renderElemData.key === 'fontSize' &&
+						renderElemData.title &&
+						renderElemData.selected
+					) {
+						return (
+							<RadioGroup
+								key={renderElemData.key}
+								title={renderElemData.title}
+								name={renderElemData.key}
+								options={renderElemData.options}
+								selected={renderElemData.selected}
+								onChange={renderElemData.onChange}
+							/>
+						);
+					}
+
+					return (
+						<Select
+							key={renderElemData.key}
+							options={renderElemData.options}
+							title={renderElemData.title}
+							selected={renderElemData.selected}
+							onChange={renderElemData.onChange}
+						/>
+					);
+				}}
 			</ArticleParamsForm>
 			{/* <ArticleParamsForm/> */}
 			<Article />

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 // мои наработки
 // import {  Select } from 'src/ui/select';
 import { SelectProps } from 'src/ui/select/Select';
+import { RadioGroupProps } from 'src/ui/radio-group/RadioGroup';
 // import { RadioGroup } from 'src/ui/radio-group';
 import {
 	FormElemsTitlesValues,
@@ -26,7 +27,11 @@ type FormProps = {
 	initState: FormState<OptionType>;
 	dataFields: FormState<OptionType[]>;
 	titlesFields: FormState<FormElemsTitlesValues>;
-	children: (data: SelectProps & { key?: FormKeys }) => React.ReactNode;
+	children: (
+		data:
+			| (SelectProps & { key: FormKeys })
+			| (RadioGroupProps & { key: FormKeys })
+	) => React.ReactNode;
 	onSubmit?: (data: FormState<OptionType>) => void;
 	onReset?: () => void;
 };

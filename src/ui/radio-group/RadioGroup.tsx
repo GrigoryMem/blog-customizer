@@ -4,7 +4,7 @@ import { Option } from './Option';
 
 import styles from './RadioGroup.module.scss';
 
-type RadioGroupProps = {
+export type RadioGroupProps = {
 	name: string; //имя группы радио
 	options: OptionType[]; //массив вариантов input radio(компонент Option)
 	selected: OptionType; //текущая выбранная опция (объект OptionType).
