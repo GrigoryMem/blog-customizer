@@ -71,19 +71,11 @@ export const ArticleParamsForm = ({
 		onReset?.();
 	}
 
-	function handleFormElemClick(
-		option: OptionType,
-		title?: string,
-		namesFields?: Record<string, string>
-	) {
-		for (const key in namesFields) {
-			if (title === namesFields[key]) {
-				setStateForm({
-					...stateForm,
-					[key]: option,
-				});
-			}
-		}
+	function handleFormElemClick(option: OptionType, title: string) {
+		setStateForm({
+			...stateForm,
+			[title]: option,
+		});
 	}
 
 	useEffect(() => {
@@ -123,11 +115,7 @@ export const ArticleParamsForm = ({
 											options={options}
 											selected={stateForm.fontSize}
 											onChange={(option) => {
-												handleFormElemClick(
-													option,
-													titleFormElements[title],
-													titleFormElements
-												);
+												handleFormElemClick(option, title);
 											}}
 										/>
 									);
@@ -140,11 +128,7 @@ export const ArticleParamsForm = ({
 												title={titleFormElements[title]}
 												selected={stateForm[title]}
 												onChange={(option) => {
-													handleFormElemClick(
-														option,
-														titleFormElements[title],
-														titleFormElements
-													);
+													handleFormElemClick(option, title);
 												}}
 											/>
 											<Separator />
@@ -158,11 +142,7 @@ export const ArticleParamsForm = ({
 										title={titleFormElements[title]}
 										selected={stateForm[title]}
 										onChange={(option) => {
-											handleFormElemClick(
-												option,
-												titleFormElements[title],
-												titleFormElements
-											);
+											handleFormElemClick(option, title);
 										}}
 									/>
 								);
