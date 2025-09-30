@@ -28,7 +28,7 @@ const App = () => {
 
 	const [dataStyles, setStyles] = useState(initStyle);
 
-	function getStyles(styles: submitForm) {
+	function applyStyles(styles: submitForm) {
 		setStyles({
 			'--font-family': styles.fontFamily.value,
 			'--font-size': styles.fontSize.value,
@@ -44,7 +44,8 @@ const App = () => {
 			<ArticleParamsForm
 				initState={initState}
 				dataFields={articlesData}
-				onSubmit={(data) => getStyles(data)}
+				onSubmit={(data) => applyStyles(data)}
+				onReset={() => applyStyles(initState)}
 			/>
 			<Article />
 		</main>

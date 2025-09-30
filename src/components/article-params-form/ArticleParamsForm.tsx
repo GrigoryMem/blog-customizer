@@ -41,12 +41,14 @@ type FormProps = {
 	initState: FormState<OptionType>;
 	dataFields: FormState<OptionType[]>;
 	onSubmit?: (data: FormState<OptionType>) => void;
+	onReset?: () => void;
 };
 
 export const ArticleParamsForm = ({
 	initState,
 	dataFields,
 	onSubmit,
+	onReset,
 }: FormProps) => {
 	// открытие формы
 	const [isOpen, setIsOpen] = useState(false);
@@ -63,7 +65,10 @@ export const ArticleParamsForm = ({
 	}
 	// функция сброса формы
 	function handleResetForm() {
+		// сброс состояния формы
 		setStateForm(initState);
+		//  сброс кастомизации страницы
+		onReset?.();
 	}
 
 	function handleFormElemClick(
