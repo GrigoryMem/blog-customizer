@@ -4,7 +4,7 @@ import { Text } from 'src/ui/text';
 import { useEnterSubmit } from './hooks/useEnterSubmit';
 
 import styles from './RadioGroup.module.scss';
-// КАК реализовано передача состояния checked???!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 type OptionProps = {
 	value: OptionType['value']; // значение опции (например, "red").
 	title: OptionType['title']; //название опции (например, "Красный").
@@ -24,13 +24,12 @@ export const Option = (props: OptionProps) => {
 	useEnterSubmit({ onChange, option });
 	//  создаем уникальный id для input и label
 	const inputId = `${groupName}_radio_item_with_value__${value}`;
-	// проверяем, выбрана ли опция => возможно баг?
+	// проверяем, выбрана ли опция
 	const isChecked = value === selected.title;
 
 	return (
 		<div
 			className={styles.item}
-			// зачем  тут key?
 			key={value}
 			// пользовательские атрибуты:
 			data-checked={isChecked} // выбрана ли опция?=> (кастомная отметка)

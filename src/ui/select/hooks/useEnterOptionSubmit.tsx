@@ -31,7 +31,6 @@ export const useEnterOptionSubmit = ({
 	}, [value, onClick, optionRef]);
 };
 
-// ПОЧЕМУ 3 ЗАВИСИМОСТИ??????
 // useEffect зависит от value, onClick, optionRef.
 // при изменении значения (value) → вызывался правильный аргумент;
 

@@ -30,5 +30,3 @@ export const useEnterSubmit = ({ onChange, option }: UseEnterSubmit) => {
 		};
 	}, [onChange, option]);
 };
-
-// почему здесь 2 зависимости в отличие от похожего хука select useEnterOptionSubmit

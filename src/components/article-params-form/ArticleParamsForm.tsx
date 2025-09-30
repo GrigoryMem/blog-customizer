@@ -2,12 +2,9 @@ import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
 import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
-import React, { useEffect, useState } from 'react';
-// мои наработки
-// import {  Select } from 'src/ui/select';
+import React, { useEffect, useState, useRef } from 'react';
 import { SelectProps } from 'src/ui/select/Select';
 import { RadioGroupProps } from 'src/ui/radio-group/RadioGroup';
-// import { RadioGroup } from 'src/ui/radio-group';
 import {
 	FormElemsTitlesValues,
 	FormState,
@@ -69,10 +66,23 @@ export const ArticleParamsForm = ({
 			[title]: option,
 		});
 	}
+	const formRef = useRef<HTMLFormElement>(null);
 
 	useEffect(() => {
-		console.log(stateForm);
-	}, [stateForm]);
+		const formElem = formRef.current;
+		if (!formElem) return;
+		const handlerEnterKeyDown = (event: KeyboardEvent) => {
+			if (event.key === 'Enter') {
+				// event.preventDefault();
+				onSubmit?.(stateForm);
+			}
+		};
+		formElem.addEventListener('keydown', handlerEnterKeyDown);
+
+		return () => {
+			formElem.removeEventListener('keydown', handlerEnterKeyDown);
+		};
+	}, []);
 
 	function handelOpenFormClick() {
 		setIsOpen(!isOpen);
@@ -87,7 +97,7 @@ export const ArticleParamsForm = ({
 			/>
 			<aside
 				className={clsx(styles.container, { [styles.container_open]: true })}>
-				<form onSubmit={handleSubmitForm} className={styles.form}>
+				<form ref={formRef} onSubmit={handleSubmitForm} className={styles.form}>
 					{/* заголовок тоже можно пустить через пропс */}
 					<Text as={'h2'} size={31} weight={800} uppercase>
 						Задайте параметры
