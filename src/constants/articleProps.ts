@@ -1,3 +1,5 @@
+import { FormState } from 'src/components/article-params-form/ArticleParamsForm';
+
 export const fontFamilyClasses = [
 	'open-sans',
 	'ubuntu',
@@ -202,4 +204,13 @@ export const articlesData = {
 	fontColor: fontColors,
 	backgroundColor: backgroundColors,
 	contentWidth: contentWidthArr,
+};
+
+export const initState: FormState<OptionType> = {
+	// формируем изначальное состояние
+	fontColor: articlesData.fontColor[0],
+	fontFamily: articlesData.fontFamily[0],
+	fontSize: articlesData.fontSize[0],
+	backgroundColor: articlesData.backgroundColor[0],
+	contentWidth: articlesData.contentWidth[0],
 };

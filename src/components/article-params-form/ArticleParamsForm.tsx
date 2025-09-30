@@ -13,7 +13,7 @@ import { Text } from 'src/ui/text';
 //  пропсы для ArticleParamsForm
 import { Separator } from 'src/ui/separator';
 //  состояние данных формы
-type FormState<T> = {
+export type FormState<T> = {
 	fontFamily: T;
 	fontSize: T;
 	fontColor: T;
@@ -38,20 +38,13 @@ type FormKeys = keyof typeof titleFormElements;
 type PairData = [FormKeys, OptionType[]]; // кортеж типизации заголовка + массив опций
 
 type FormProps = {
+	initState: FormState<OptionType>;
 	onSubmit?: (data: FormState<OptionType>) => void;
 };
 
-export const ArticleParamsForm = ({ onSubmit }: FormProps) => {
+export const ArticleParamsForm = ({ initState, onSubmit }: FormProps) => {
+	// открытие формы
 	const [isOpen, setIsOpen] = useState(false);
-
-	const initState: FormState<OptionType> = {
-		// формируем изначальное состояние
-		fontColor: articlesData.fontColor[0],
-		fontFamily: articlesData.fontFamily[0],
-		fontSize: articlesData.fontSize[0],
-		backgroundColor: articlesData.backgroundColor[0],
-		contentWidth: articlesData.contentWidth[0],
-	};
 
 	const [stateForm, setStateForm] = useState<FormState<OptionType>>(initState);
 	// фнкция отправки формы

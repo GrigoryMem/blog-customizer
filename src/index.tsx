@@ -7,7 +7,7 @@ import {
 	ArticleParamsForm,
 	submitForm,
 } from './components/article-params-form/ArticleParamsForm';
-import { defaultArticleState } from './constants/articleProps';
+import { defaultArticleState, initState } from './constants/articleProps';
 import './styles/index.scss';
 import styles from './styles/index.module.scss';
 
@@ -38,7 +38,10 @@ const App = () => {
 
 	return (
 		<main className={clsx(styles.main)} style={dataStyles}>
-			<ArticleParamsForm onSubmit={(data) => getStyles(data)} />
+			<ArticleParamsForm
+				initState={initState}
+				onSubmit={(data) => getStyles(data)}
+			/>
 			<Article />
 		</main>
 	);
