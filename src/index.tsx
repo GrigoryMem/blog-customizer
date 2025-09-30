@@ -1,13 +1,16 @@
 import { createRoot } from 'react-dom/client';
 import { StrictMode, CSSProperties, useState } from 'react';
 import clsx from 'clsx';
-
 import { Article } from './components/article/Article';
 import {
 	ArticleParamsForm,
 	submitForm,
 } from './components/article-params-form/ArticleParamsForm';
-import { defaultArticleState, initState } from './constants/articleProps';
+import {
+	defaultArticleState,
+	initState,
+	articlesData,
+} from './constants/articleProps';
 import './styles/index.scss';
 import styles from './styles/index.module.scss';
 
@@ -40,6 +43,7 @@ const App = () => {
 		<main className={clsx(styles.main)} style={dataStyles}>
 			<ArticleParamsForm
 				initState={initState}
+				dataFields={articlesData}
 				onSubmit={(data) => getStyles(data)}
 			/>
 			<Article />

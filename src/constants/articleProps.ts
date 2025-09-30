@@ -198,7 +198,7 @@ export const defaultArticleState = {
 // Тип состояния статьи
 export type ArticleStateType = typeof defaultArticleState;
 //  экспорт всех данных:
-export const articlesData = {
+export const articlesData: FormState<OptionType[]> = {
 	fontFamily: fontFamilyOptions,
 	fontSize: fontSizeOptions,
 	fontColor: fontColors,

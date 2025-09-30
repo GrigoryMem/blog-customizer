@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 // мои наработки
 import { Select } from 'src/ui/select';
 import { RadioGroup } from 'src/ui/radio-group';
-import { articlesData, OptionType } from 'src/constants/articleProps';
+import { OptionType } from 'src/constants/articleProps';
 // import { StoryDecorator } from 'src/ui/story-decorator';
 // import {}
 import { Text } from 'src/ui/text';
@@ -39,10 +39,15 @@ type PairData = [FormKeys, OptionType[]]; // кортеж типизации з�
 
 type FormProps = {
 	initState: FormState<OptionType>;
+	dataFields: FormState<OptionType[]>;
 	onSubmit?: (data: FormState<OptionType>) => void;
 };
 
-export const ArticleParamsForm = ({ initState, onSubmit }: FormProps) => {
+export const ArticleParamsForm = ({
+	initState,
+	dataFields,
+	onSubmit,
+}: FormProps) => {
 	// открытие формы
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -100,7 +105,7 @@ export const ArticleParamsForm = ({ initState, onSubmit }: FormProps) => {
 					</Text>
 					{/* моя правка */}
 					<div className={styles.selectGroup}>
-						{(Object.entries(articlesData) as PairData[]).map(
+						{(Object.entries(dataFields) as PairData[]).map(
 							// кортеж PairData  а если такой ключ title ?? в объекте Object.entries(articlesData)
 
 							([title, options]) => {
