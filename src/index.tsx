@@ -1,8 +1,9 @@
 import { createRoot } from 'react-dom/client';
-import { StrictMode, CSSProperties, useState } from 'react';
+import { StrictMode, CSSProperties, useState, Fragment } from 'react';
 import clsx from 'clsx';
 import { Article } from './components/article/Article';
 import { RadioGroup } from './ui/radio-group';
+import { Separator } from './ui/separator';
 import {
 	ArticleParamsForm,
 	submitForm,
@@ -67,7 +68,21 @@ const App = () => {
 							/>
 						);
 					}
-
+					//  добавляем разделитель
+					if (renderElemData.key === 'fontColor') {
+						return (
+							<Fragment key={renderElemData.key}>
+								<Select
+									options={renderElemData.options}
+									title={renderElemData.title}
+									selected={renderElemData.selected}
+									onChange={renderElemData.onChange}
+								/>
+								<Separator />
+							</Fragment>
+						);
+					}
+					// рендер по умолчанию
 					return (
 						<Select
 							key={renderElemData.key}
@@ -79,7 +94,6 @@ const App = () => {
 					);
 				}}
 			</ArticleParamsForm>
-			{/* <ArticleParamsForm/> */}
 			<Article />
 		</main>
 	);
