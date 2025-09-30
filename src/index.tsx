@@ -11,6 +11,7 @@ import {
 	initState,
 	articlesData,
 } from './constants/articleProps';
+import { FormElemsTitles } from './constants/formData';
 import './styles/index.scss';
 import styles from './styles/index.module.scss';
 
@@ -44,6 +45,7 @@ const App = () => {
 			<ArticleParamsForm
 				initState={initState}
 				dataFields={articlesData}
+				titlesFields={FormElemsTitles}
 				onSubmit={(data) => applyStyles(data)}
 				onReset={() => applyStyles(initState)}
 			/>

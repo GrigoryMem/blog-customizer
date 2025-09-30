@@ -1,4 +1,6 @@
-import { FormState } from 'src/components/article-params-form/ArticleParamsForm';
+// import { FormState } from 'src/components/article-params-form/ArticleParamsForm';
+
+import { FormState } from './formData';
 
 export const fontFamilyClasses = [
 	'open-sans',

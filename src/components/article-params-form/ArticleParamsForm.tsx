@@ -6,40 +6,25 @@ import React, { useEffect, useState } from 'react';
 // мои наработки
 import { Select } from 'src/ui/select';
 import { RadioGroup } from 'src/ui/radio-group';
+import {
+	FormElemsTitlesValues,
+	FormState,
+	FormKeys,
+} from 'src/constants/formData';
 import { OptionType } from 'src/constants/articleProps';
 // import { StoryDecorator } from 'src/ui/story-decorator';
-// import {}
 import { Text } from 'src/ui/text';
 //  пропсы для ArticleParamsForm
 import { Separator } from 'src/ui/separator';
-//  состояние данных формы
-export type FormState<T> = {
-	fontFamily: T;
-	fontSize: T;
-	fontColor: T;
-	backgroundColor: T;
-	contentWidth: T;
-};
-
-type TitlesFormElems = string;
-
 export type submitForm = FormState<OptionType>;
-//названия шрифтов
-const titleFormElements: FormState<TitlesFormElems> = {
-	fontFamily: 'Шрифт',
-	fontSize: 'Размер шрифта',
-	fontColor: 'Цвет шрифта',
-	backgroundColor: 'Цвет фона',
-	contentWidth: 'Ширина контента',
-};
 //  ограничиваем ключи полей формы нашими данными -для типизации заголовков полей формы
-type FormKeys = keyof typeof titleFormElements;
 //  составляем кортеж для итерации по Object.entries - массив кортежей, по которым итерируемся
-type PairData = [FormKeys, OptionType[]]; // кортеж типизации заголовка + массив опций
+type PairData = [FormKeys, OptionType[]]; // кортеж типизации ключа заголовка + массив опций
 
 type FormProps = {
 	initState: FormState<OptionType>;
 	dataFields: FormState<OptionType[]>;
+	titlesFields: FormState<FormElemsTitlesValues>;
 	onSubmit?: (data: FormState<OptionType>) => void;
 	onReset?: () => void;
 };
@@ -47,6 +32,7 @@ type FormProps = {
 export const ArticleParamsForm = ({
 	initState,
 	dataFields,
+	titlesFields,
 	onSubmit,
 	onReset,
 }: FormProps) => {
@@ -59,9 +45,7 @@ export const ArticleParamsForm = ({
 		// React.FormEvent - типизация событий формы submit
 		// HTMLFormElement связнное с тегом form
 		e.preventDefault();
-		if (onSubmit) {
-			onSubmit(stateForm);
-		}
+		onSubmit?.(stateForm);
 	}
 	// функция сброса формы
 	function handleResetForm() {
@@ -110,7 +94,7 @@ export const ArticleParamsForm = ({
 									return (
 										<RadioGroup
 											key={title}
-											title={titleFormElements[title]}
+											title={titlesFields[title]}
 											name={title}
 											options={options}
 											selected={stateForm.fontSize}
@@ -125,7 +109,7 @@ export const ArticleParamsForm = ({
 										<React.Fragment key={title}>
 											<Select
 												options={options}
-												title={titleFormElements[title]}
+												title={titlesFields[title]}
 												selected={stateForm[title]}
 												onChange={(option) => {
 													handleFormElemClick(option, title);
@@ -139,7 +123,7 @@ export const ArticleParamsForm = ({
 									<Select
 										key={title}
 										options={options}
-										title={titleFormElements[title]}
+										title={titlesFields[title]}
 										selected={stateForm[title]}
 										onChange={(option) => {
 											handleFormElemClick(option, title);
