@@ -40,7 +40,6 @@ const App = () => {
 			'--container-width': styles.contentWidth.value,
 			'--bg-color': styles.backgroundColor.value,
 		} as CSSProperties);
-		console.log('я хозяин', styles);
 	}
 
 	return (
