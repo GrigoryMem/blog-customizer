@@ -14,6 +14,7 @@ import {
 import { FormElemsTitles } from './constants/formData';
 import './styles/index.scss';
 import styles from './styles/index.module.scss';
+import { Select } from './ui/select';
 
 const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
@@ -47,8 +48,18 @@ const App = () => {
 				dataFields={articlesData}
 				titlesFields={FormElemsTitles}
 				onSubmit={(data) => applyStyles(data)}
-				onReset={() => applyStyles(initState)}
-			/>
+				onReset={() => applyStyles(initState)}>
+				{(renderElemData) => (
+					<Select
+						key={renderElemData.key}
+						options={renderElemData.options}
+						title={renderElemData.title}
+						selected={renderElemData.selected}
+						onChange={renderElemData.onChange}
+					/>
+				)}
+			</ArticleParamsForm>
+			{/* <ArticleParamsForm/> */}
 			<Article />
 		</main>
 	);

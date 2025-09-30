@@ -4,8 +4,9 @@ import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
 import React, { useEffect, useState } from 'react';
 // мои наработки
-import { Select } from 'src/ui/select';
-import { RadioGroup } from 'src/ui/radio-group';
+// import {  Select } from 'src/ui/select';
+import { SelectProps } from 'src/ui/select/Select';
+// import { RadioGroup } from 'src/ui/radio-group';
 import {
 	FormElemsTitlesValues,
 	FormState,
@@ -15,7 +16,7 @@ import { OptionType } from 'src/constants/articleProps';
 // import { StoryDecorator } from 'src/ui/story-decorator';
 import { Text } from 'src/ui/text';
 //  пропсы для ArticleParamsForm
-import { Separator } from 'src/ui/separator';
+// import { Separator } from 'src/ui/separator';
 export type submitForm = FormState<OptionType>;
 //  ограничиваем ключи полей формы нашими данными -для типизации заголовков полей формы
 //  составляем кортеж для итерации по Object.entries - массив кортежей, по которым итерируемся
@@ -25,6 +26,7 @@ type FormProps = {
 	initState: FormState<OptionType>;
 	dataFields: FormState<OptionType[]>;
 	titlesFields: FormState<FormElemsTitlesValues>;
+	children: (data: SelectProps & { key?: FormKeys }) => React.ReactNode;
 	onSubmit?: (data: FormState<OptionType>) => void;
 	onReset?: () => void;
 };
@@ -33,6 +35,7 @@ export const ArticleParamsForm = ({
 	initState,
 	dataFields,
 	titlesFields,
+	children,
 	onSubmit,
 	onReset,
 }: FormProps) => {
@@ -87,6 +90,61 @@ export const ArticleParamsForm = ({
 					{/* моя правка */}
 					<div className={styles.selectGroup}>
 						{(Object.entries(dataFields) as PairData[]).map(
+							// кортеж PairData  а если такой ключ title напр  ?? в объекте Object.entries(articlesData)
+
+							([keyTitle, options]) => {
+								// if (title === 'fontSize') {
+								// 	return (
+								// 		<RadioGroup
+								// 			key={title}
+								// 			title={titlesFields[title]}
+								// 			name={title}
+								// 			options={options}
+								// 			selected={stateForm.fontSize}
+								// 			onChange={(option) => {
+								// 				handleFormElemClick(option, title);
+								// 			}}
+								// 		/>
+								// 	);
+								// }
+								// if (title === 'fontColor') {
+								// 	return (
+								// 		<React.Fragment key={title}>
+								// 			<Select
+								// 				options={options}
+								// 				title={titlesFields[title]}
+								// 				selected={stateForm[title]}
+								// 				onChange={(option) => {
+								// 					handleFormElemClick(option, title);
+								// 				}}
+								// 			/>
+								// 			<Separator />
+								// 		</React.Fragment>
+								// 	);
+								// }
+								return (
+									// <Select
+									// 	key={title}
+									// 	options={options}
+									// 	title={titlesFields[title]}
+									// 	selected={stateForm[title]}
+									// 	onChange={(option) => {
+									// 		handleFormElemClick(option, title);
+									// 	}}
+									// />
+									children({
+										key: keyTitle,
+										options,
+										title: titlesFields[keyTitle],
+										selected: stateForm[keyTitle],
+										onChange: (option) => {
+											handleFormElemClick(option, keyTitle);
+										},
+									})
+								);
+							}
+						)}
+						{/* {(Object.entries(dataFields) as PairData[]).map(
 							// кортеж PairData  а если такой ключ title ?? в объекте Object.entries(articlesData)
 
 							([title, options]) => {
@@ -131,7 +189,7 @@ export const ArticleParamsForm = ({
 									/>
 								);
 							}
-						)}
+						)} */}
 					</div>
 					<div className={styles.bottomContainer}>
 						<Button
