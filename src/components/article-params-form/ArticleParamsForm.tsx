@@ -19,16 +19,17 @@ export type submitForm = FormState<OptionType>;
 //  ограничиваем ключи полей формы нашими данными -для типизации заголовков полей формы
 //  составляем кортеж для итерации по Object.entries - массив кортежей, по которым итерируемся
 type PairData = [FormKeys, OptionType[]]; // кортеж типизации ключа заголовка + массив опций
+//  пропсы для рендер функции children включает пропсы Select и RadioGroup + key
+export type ChildrenRenderProps =
+	| (SelectProps & { key: FormKeys })
+	| (RadioGroupProps & { key: FormKeys });
 
+//  пропсы для ArticleParamsForm
 type FormProps = {
 	initState: FormState<OptionType>;
-	dataFields: FormState<OptionType[]>;
-	titlesFields: FormState<FormElemsTitlesValues>;
-	children: (
-		data:
-			| (SelectProps & { key: FormKeys })
-			| (RadioGroupProps & { key: FormKeys })
-	) => React.ReactNode;
+	dataFields: FormState<OptionType[]>; // формы полей(ключи +сами опции)
+	titlesFields: FormState<FormElemsTitlesValues>; // заголовки полей
+	children: (data: ChildrenRenderProps) => React.ReactNode; // настраиаем отображение копмпонентов полей через children функцию
 	onSubmit?: (data: FormState<OptionType>) => void;
 	onReset?: () => void;
 };
