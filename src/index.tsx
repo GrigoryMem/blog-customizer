@@ -1,6 +1,5 @@
 import { createRoot } from 'react-dom/client';
 import { StrictMode, CSSProperties, useState, Fragment } from 'react';
-import clsx from 'clsx';
 import { Article } from './components/article/Article';
 import { RadioGroup } from './ui/radio-group';
 import { Separator } from './ui/separator';
@@ -43,7 +42,7 @@ const App = () => {
 	}
 
 	return (
-		<main className={clsx(styles.main)} style={dataStyles}>
+		<main className={styles.main} style={dataStyles}>
 			<ArticleParamsForm
 				initState={initState}
 				dataFields={articlesData}
