@@ -42,7 +42,7 @@ export const ArticleParamsForm = ({
 	onReset,
 }: FormProps) => {
 	// открытие формы
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const [stateForm, setStateForm] = useState<FormState<OptionType>>(initState);
 	// фнкция отправки формы
@@ -85,18 +85,20 @@ export const ArticleParamsForm = ({
 	}, []);
 
 	function handelOpenFormClick() {
-		setIsOpen(!isOpen);
+		setIsMenuOpen(!isMenuOpen);
 	}
 	return (
 		<>
 			<ArrowButton
-				isOpen={isOpen}
+				isOpen={isMenuOpen}
 				onClick={() => {
 					handelOpenFormClick();
 				}}
 			/>
 			<aside
-				className={clsx(styles.container, { [styles.container_open]: isOpen })}>
+				className={clsx(styles.container, {
+					[styles.container_open]: isMenuOpen,
+				})}>
 				<form ref={formRef} onSubmit={handleSubmitForm} className={styles.form}>
 					{/* заголовок тоже можно пустить через пропс */}
 					<Text as={'h2'} size={31} weight={800} uppercase>
