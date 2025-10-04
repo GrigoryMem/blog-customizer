@@ -1,16 +1,135 @@
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
-
+import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
+import React, { useEffect, useState, useRef } from 'react';
+import { SelectProps } from 'src/ui/select/Select';
+import { RadioGroupProps } from 'src/ui/radio-group/RadioGroup';
+import {
+	FormElemsTitlesValues,
+	FormState,
+	FormKeys,
+} from 'src/constants/formData';
+import { OptionType } from 'src/constants/articleProps';
+// import { StoryDecorator } from 'src/ui/story-decorator';
+import { Text } from 'src/ui/text';
+//  пропсы для ArticleParamsForm
+// import { Separator } from 'src/ui/separator';
+export type submitForm = FormState<OptionType>;
+//  ограничиваем ключи полей формы нашими данными -для типизации заголовков полей формы
+//  составляем кортеж для итерации по Object.entries - массив кортежей, по которым итерируемся
+type PairData = [FormKeys, OptionType[]]; // кортеж типизации ключа заголовка + массив опций
+//  пропсы для рендер функции children включает пропсы Select и RadioGroup + key
+export type ChildrenRenderProps =
+	| (SelectProps & { key: FormKeys })
+	| (RadioGroupProps & { key: FormKeys });
 
-export const ArticleParamsForm = () => {
+//  пропсы для ArticleParamsForm
+type FormProps = {
+	initState: FormState<OptionType>;
+	dataFields: FormState<OptionType[]>; // формы полей(ключи +сами опции)
+	titlesFields: FormState<FormElemsTitlesValues>; // заголовки полей
+	children: (data: ChildrenRenderProps) => React.ReactNode; // настраиаем отображение копмпонентов полей через children функцию
+	onSubmit?: (data: FormState<OptionType>) => void;
+	onReset?: () => void;
+};
+
+export const ArticleParamsForm = ({
+	initState,
+	dataFields,
+	titlesFields,
+	children,
+	onSubmit,
+	onReset,
+}: FormProps) => {
+	// открытие формы
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+	const [stateForm, setStateForm] = useState<FormState<OptionType>>(initState);
+	// фнкция отправки формы
+	function handleSubmitForm(e: React.FormEvent<HTMLFormElement>) {
+		// React.FormEvent - типизация событий формы submit
+		// HTMLFormElement связнное с тегом form
+		e.preventDefault();
+		onSubmit?.(stateForm);
+	}
+	// функция сброса формы
+	function handleResetForm() {
+		// сброс состояния формы
+		setStateForm(initState);
+		//  сброс кастомизации страницы
+		onReset?.();
+	}
+
+	function handleFormElemClick(option: OptionType, title: string) {
+		setStateForm({
+			...stateForm,
+			[title]: option,
+		});
+	}
+	const formRef = useRef<HTMLFormElement>(null);
+
+	useEffect(() => {
+		const formElem = formRef.current;
+		if (!formElem) return;
+		const handlerEnterKeyDown = (event: KeyboardEvent) => {
+			if (event.key === 'Enter') {
+				// event.preventDefault();
+				onSubmit?.(stateForm);
+			}
+		};
+		formElem.addEventListener('keydown', handlerEnterKeyDown);
+
+		return () => {
+			formElem.removeEventListener('keydown', handlerEnterKeyDown);
+		};
+	}, []);
+
+	function handelOpenFormClick() {
+		setIsMenuOpen(!isMenuOpen);
+	}
 	return (
 		<>
-			<ArrowButton isOpen={false} onClick={() => {}} />
-			<aside className={styles.container}>
-				<form className={styles.form}>
+			<ArrowButton
+				isOpen={isMenuOpen}
+				onClick={() => {
+					handelOpenFormClick();
+				}}
+			/>
+			<aside
+				className={clsx(styles.container, {
+					[styles.container_open]: isMenuOpen,
+				})}>
+				<form ref={formRef} onSubmit={handleSubmitForm} className={styles.form}>
+					{/* заголовок тоже можно пустить через пропс */}
+					<Text as={'h2'} size={31} weight={800} uppercase>
+						Задайте параметры
+					</Text>
+					{/* моя правка */}
+					<div className={styles.selectGroup}>
+						{(Object.entries(dataFields) as PairData[]).map(
+							// кортеж PairData  а если такой ключ title напр  ?? в объекте Object.entries(articlesData)
+
+							([keyTitle, options]) => {
+								return children({
+									key: keyTitle,
+									options,
+									title: titlesFields[keyTitle],
+									selected: stateForm[keyTitle],
+									onChange: (option) => {
+										handleFormElemClick(option, keyTitle);
+									},
+								});
+							}
+						)}
+					</div>
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' htmlType='reset' type='clear' />
+						<Button
+							onClick={handleResetForm}
+							title='Сбросить'
+							htmlType='reset'
+							type='clear'
+						/>
 						<Button title='Применить' htmlType='submit' type='apply' />
 					</div>
 				</form>
